@@ -1,6 +1,7 @@
 "use client";
 
-import { Map } from "react-kakao-maps-sdk";
+import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
+import { Resizer } from "./Resizer";
 
 interface MapComponentProps {
     lat: number;
@@ -10,9 +11,15 @@ interface MapComponentProps {
 }
 
 export const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, level, children }) => {
+    const [loading, error] = useKakaoLoader({
+        appkey: "f1494ad8df2a9262259940f691221ac9",
+    });
+
     return (
-        <Map center={{ lat, lng }} level={level} className="z-0 h-screen w-screen">
-            {children}
-        </Map>
+        <Resizer>
+            <Map center={{ lat, lng }} level={level} className="z-0 h-[90vh] w-screen">
+                {children}
+            </Map>
+        </Resizer>
     );
 };

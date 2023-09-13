@@ -4,6 +4,9 @@
 
 :root {
     --vh: 100%;
+    -webkit-scrollbar {
+        display: none;
+    }
 }
 
 html,
@@ -30,4 +33,8 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.bottomSheetChildren::-webkit-scrollbar {
+    display: none;
 }

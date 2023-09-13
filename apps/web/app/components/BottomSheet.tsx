@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import "../../styles/land.css";
 
 interface BottomSheetProps {
     initialPosition?: number;
     children: React.ReactNode;
 }
 
-const BottomSheet: React.FC<BottomSheetProps> = ({ initialPosition = 25, children }) => {
+const BottomSheet: React.FC<BottomSheetProps> = ({ initialPosition = 35, children }) => {
     const [position, setPosition] = useState(initialPosition);
     const [height, setHeight] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
@@ -45,13 +46,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ initialPosition = 25, childre
                     isDragging ? "cursor-grabbing" : "cursor-pointer"
                 }`}
                 onMouseDown={handleMouseDown}
-            ></div>
-            <div className="bg-gray-200 h-[1px] my-4" style={{ width: `${position}%` }}></div>
-            <div className="p-4" style={{ height: `${height}px`, overflow: "auto" }}>
+            />
+            <div className="bg-gray-200 h-[1px] my-2" style={{ width: `${position}%` }}></div>
+            <div className="p-2 bottomSheetChildren" style={{ height: `${height}px`, overflow: "auto" }}>
                 {children}
-            </div>
-            <div className="text-center py-2 cursor-pointer text-blue-500" onClick={() => setPosition(0)}>
-                Close
             </div>
         </div>
     );

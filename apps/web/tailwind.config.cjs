@@ -30,6 +30,9 @@ module.exports = {
             inset: {
                 21: "5.25rem",
             },
+            height: {
+                "real-screen": "calc(var(vh) * 100)",
+            },
         },
     },
     darkMode: "class",

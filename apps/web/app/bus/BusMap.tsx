@@ -32,7 +32,7 @@ function BusOverlay({ position }: { position: { x: number; y: number } | null })
 
 async function getStopData() {
     // Fetch data from an API or any other source
-    const response = await axios.get("http://121.137.66.90:8080/bus/location/stops", {});
+    const response = await axios.get("http://127.0.0.1:8080/bus/location/stops", {});
     // console.log(response.data.data);
     return response.data.data;
 }
@@ -48,7 +48,7 @@ export default function () {
     });
 
     useEffect(() => {
-        const rws = new ReconnectingWebSocket("ws://121.137.66.90:8080/bin");
+        const rws = new ReconnectingWebSocket("ws://127.0.0.1:8080/bin");
 
         getStopData()
             .then(pos => {
