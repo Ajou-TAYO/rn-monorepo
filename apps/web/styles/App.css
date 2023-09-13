@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hdStyle {
+    background-color: #e8e8e8;
+    height: 80px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-style: normal;
+    font-size: 30px;
+    line-height: 36px;
+    left: 30px;
+    padding: 10px 0 0 30px;
+}
+
+.profile {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: grey;
+    position: absolute;
+    top: 25px;
+    left: 320px;
+}
+
+.notice {
+    background-color: grey;
+    justify-content: space-between;
+}

@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --vh: 100%;
+}
+
+html,
+body {
+    /*height: calc(var(--vh, 1vh) * 100);*/
+    height: 100vh;
+    height: -webkit-fill-available;
+    height: fill-available;
+}
+
+.noticeItem {
+    /* 필요한 스타일 추가 */
+    /* 예시로 높이와 너비를 지정 */
+    height: 27px;
+    width: 360px;
+    overflow: hidden;
+}
+
+.itemTitle {
+    font-weight: 600;
+    font-size: 14px;
+    border: solid gray 0.5px;
+    padding: 4px 10px 4px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
