@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import BottomTab from "../../components/BottomNav";
 import TopBar from "../../components/TopBar";
+import "../../../styles/land.css";
 
 //버스 상세 공지사항 페이지
 const BusBoardDetail = () => {

@@ -127,7 +127,7 @@ export default function BusPage() {
 
                 <div className="absolute inset-x-0 top-20 z-10 flex flex-col items-center">
                     <div className="badge badge-error gap-2">
-                        <Link className="text-xs" href="/busboarddetail">
+                        <Link className="text-xs bg-yellow-500 rounded-full px-3 py-1" href="/bus/busboarddetail">
                             <span className="mr-2 font-bold">[공지]</span>
                             {boardContent}
                         </Link>
