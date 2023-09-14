@@ -142,7 +142,7 @@ export default function BusPage() {
                     </div>
                 </div>
 
-                <div className="fixed right-2 top-20 flex items-center justify-center">
+                {/* <div className="fixed right-2 top-20 flex items-center justify-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500">
                         <button type="button" onClick={setModal}>
                             <img
@@ -166,7 +166,7 @@ export default function BusPage() {
                             {modalIsOpen && <BusPage2 closeModal={setModal} />}
                         </ReactModal>
                     </div>
-                </div>
+                </div> */}
 
                 {!modalIsOpen && (
                     <BottomSheet>
