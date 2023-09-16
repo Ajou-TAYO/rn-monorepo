@@ -8,7 +8,7 @@ import "../../styles/land.css";
 import TopBar from "../components/TopBar";
 import { BiCoffee, BiDrink } from "react-icons/bi";
 import { PiBowlFood, PiGuitar } from "react-icons/pi";
-import { MapComponent } from "../components/Map";
+import { MapComponent, defaultMapLevel, mapLevel } from "../components/Map";
 import { Resizer } from "../components/Resizer";
 
 async function getData() {
@@ -21,22 +21,22 @@ const categoryType = {
     CAFE: {
         title: "카페",
         className: "bg-red-500",
-        icon: <BiCoffee />,
+        icon: <BiCoffee className="w-full h-full p-1" />,
     },
     RESTAURANT: {
         title: "식당",
         className: "bg-blue-500",
-        icon: <PiBowlFood />,
+        icon: <PiBowlFood className="w-full h-full p-1" />,
     },
     PUB: {
         title: "주점",
         className: "bg-green-500",
-        icon: <BiDrink />,
+        icon: <BiDrink className="w-full h-full p-1" />,
     },
     ETC: {
         title: "기타",
         className: "bg-yellow-500",
-        icon: <PiGuitar />,
+        icon: <PiGuitar className="w-full h-full p-1" />,
     },
 };
 
@@ -85,12 +85,12 @@ export default function AllianceMap() {
                 <TopBar />
 
                 <MapComponent lat={center.lat} lng={center.lng} level={3}>
-                    {filteredPartnershipDatas.map(filteredPartnershipData => (
+                    {filteredPartnershipDatas.map((filteredPartnershipData, index) => (
                         <CustomOverlayMap
                             position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}
                         >
                             <div
-                                className={`h-4 w-4 translate-x-1/2 translate-y-1/2 rounded-full border-2 border-black ${
+                                className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 border-black flex items-center justify-center ${
                                     categoryType[filteredPartnershipData.category as TCategoryKey].className
                                 }`}
                                 onClick={() => {
@@ -99,7 +99,14 @@ export default function AllianceMap() {
                                     setOpen(newBottomSheetStates);
                                     setList(false);
                                 }}
-                            />
+                                style={{
+                                    width: 0.8 * (defaultMapLevel / mapLevel) + "rem",
+                                    height: 0.8 * (defaultMapLevel / mapLevel) + "rem",
+                                }}
+                                key={index}
+                            >
+                                {categoryType[filteredPartnershipData.category as TCategoryKey].icon}
+                            </div>
                         </CustomOverlayMap>
                     ))}
                     <BottomSheet>
