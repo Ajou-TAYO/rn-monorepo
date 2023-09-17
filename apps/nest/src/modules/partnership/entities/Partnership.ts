@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { LocationType } from '@/common';
+import { LocationType } from '@/common/utils';
 
 @Entity({ name: 'partnerships' })
 export class Partnership {

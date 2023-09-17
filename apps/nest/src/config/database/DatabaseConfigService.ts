@@ -2,7 +2,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Bus, BusNotice, BusStop } from '@/modules/bus/entities';
+import { Bus, BusNotice, BusRoute, BusStop } from '@/modules/bus/entities';
 import { Member } from '@/modules/member/entities';
 import { CampusAmenity } from '@/modules/campus/entities';
 import { Partnership } from '@/modules/partnership/entities';
@@ -17,6 +17,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       Member,
       BusNotice,
       BusStop,
+      BusRoute,
       Bus,
       CampusAmenity,
       Partnership,
