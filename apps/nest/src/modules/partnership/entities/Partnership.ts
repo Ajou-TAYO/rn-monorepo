@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { LocationType } from '@/common/utils';
 
-@Entity({ name: 'partnerships' })
+@Entity({ name: 'partnership' })
 export class Partnership {
   @PrimaryGeneratedColumn({ unsigned: true, name: 'partnership_id' })
   id!: number;

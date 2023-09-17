@@ -40,7 +40,7 @@ export class BusController {
   async getAllNotice() {
     const notices = await this.busNoticeService.getAll();
     if (!notices) {
-      throw new NotFoundException();
+      throw new NotFoundException('BusNotices not found');
     }
     return this.dtoMapper.mapToDTOList(notices, BusNoticeResponseDTO);
   }
@@ -49,7 +49,7 @@ export class BusController {
   async findByNoticeId(@Param('id') id: number) {
     const notice = await this.busNoticeService.findById(id);
     if (!notice) {
-      throw new NotFoundException();
+      throw new NotFoundException('BusNotice not found');
     }
     return new BusNoticeResponseDTO(notice);
   }
@@ -58,7 +58,7 @@ export class BusController {
   async getAllBusStop() {
     const busStops = await this.busStopService.getAll();
     if (!busStops) {
-      throw new NotFoundException();
+      throw new NotFoundException('BusStops not found');
     }
     return this.dtoMapper.mapToDTOList(busStops, BusStopResponseDTO);
   }
@@ -67,36 +67,25 @@ export class BusController {
   async findByBusStopId(@Param('id') id: number) {
     const busStop = await this.busStopService.findById(id);
     if (!busStop) {
-      throw new NotFoundException();
+      throw new NotFoundException('BusStop not found');
     }
     return new BusStopResponseDTO(busStop);
   }
 
   @Get('/routes')
   async getAllBusRoutes() {
-    // const routes = await this.busRouteService.getAll();
-    // if (!routes) {
-    //   throw new NotFoundException();
-    // }
-    // return this.dtoMapper.mapToDTOList(routes, BusRouteResponseDTO);
-    try {
-      const routes = await this.busRouteService.getAll();
-      if (!routes) {
-        throw new NotFoundException();
-      }
-      return this.dtoMapper.mapToDTOList(routes, BusRouteResponseDTO);
-    } catch (error) {
-      // 여기서 예외 처리를 수행하거나, 에러 로깅 등을 수행할 수 있습니다.
-      console.error(error);
-      throw new InternalServerErrorException();
+    const routes = await this.busRouteService.getAll();
+    if (!routes) {
+      throw new NotFoundException('BusRoutes not found');
     }
+    return this.dtoMapper.mapToDTOList(routes, BusRouteResponseDTO);
   }
 
   @Get('/routes/:id')
   async findByBusRoutesId(@Param('id') id: number) {
     const route = await this.busRouteService.findById(id);
     if (!route) {
-      throw new NotFoundException();
+      throw new NotFoundException('BusRoute not found');
     }
     return new BusRouteResponseDTO(route);
   }
