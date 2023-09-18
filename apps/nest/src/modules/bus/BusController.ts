@@ -6,17 +6,19 @@ import {
   Patch,
   Param,
   Delete,
-  NotFoundException, InternalServerErrorException,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { BusService } from './services/BusService';
 import { MyWebSocketGateway } from '@/config/websocket/WebSocketGateway';
 import { BusNoticeService, BusRouteService } from '@/modules/bus/services';
 import { BusStopService } from '@/modules/bus/services/BusStopService';
 import {
-  BusNoticeResponseDTO, BusRouteResponseDTO,
+  BusNoticeResponseDTO,
+  BusRouteResponseDTO,
 } from '@/modules/bus/dtos/responses';
 import { DTOMapper } from '@/common/utils/DTOMapper';
-import {BusStopResponseDTO} from "@/modules/bus/dtos/responses/BusStopResponseDTO";
+import { BusStopResponseDTO } from '@/modules/bus/dtos/responses/BusStopResponseDTO';
 @Controller('bus')
 export class BusController {
   constructor(
@@ -28,6 +30,14 @@ export class BusController {
     private readonly myWebSocketGateway: MyWebSocketGateway,
     private readonly dtoMapper: DTOMapper, // DtoMapper를 주입받습니다.
   ) {}
+
+  @Post()
+  async getBusPosition(@Body() body: { bus_id: string; pos: string }) {
+    const { bus_id, pos } = body;
+    await this.busService.getBusPosition(bus_id, pos);
+
+    return { message: `success ${bus_id} ${pos}` };
+  }
 
   @Get('/websocket')
   async getRedisData() {
