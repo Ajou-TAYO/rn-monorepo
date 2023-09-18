@@ -13,7 +13,7 @@ import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import BottomSheet from "../components/BottomSheet";
 import { Resizer } from "../components/Resizer";
-import { MapComponent } from "../components/Map";
+import { MapComponent, defaultMapLevel, mapLevel } from "../components/Map";
 
 async function getData() {
     // Fetch data from an API or any other source
@@ -24,27 +24,27 @@ async function getData() {
 const category = {
     PRINTER: {
         title: "프린터",
-        icon: <BiPrinter />,
+        icon: <BiPrinter className="w-full h-full p-1" />,
     },
     CAFE: {
         title: "카페",
-        icon: <BiCoffee />,
+        icon: <BiCoffee className="w-full h-full p-1" />,
     },
     CAFETERIA: {
         title: "식당",
-        icon: <PiBowlFood />,
+        icon: <PiBowlFood className="w-full h-full p-1" />,
     },
     VENDINGMACHINE: {
         title: "자판기",
-        icon: <GiVendingMachine />,
+        icon: <GiVendingMachine className="w-full h-full p-1" />,
     },
     SMOKE: {
         title: "흡연구역",
-        icon: <LuCigarette />,
+        icon: <LuCigarette className="w-full h-full p-1" />,
     },
     STORE: {
         title: "편의점",
-        icon: <MdOutlineLocalConvenienceStore />,
+        icon: <MdOutlineLocalConvenienceStore className="w-full h-full p-1" />,
     },
 };
 
@@ -98,14 +98,20 @@ export default function SchoolMap() {
                             position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}
                         >
                             <div
-                                className={`h-4 w-4 translate-x-1/2 translate-y-1/2 rounded-full border-2 bg-white border-slate-700`}
+                                className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 bg-white border-slate-700 flex justify-center items-center`}
                                 onClick={() => {
                                     const newBottomSheetStates = [...Open];
                                     newBottomSheetStates[filteredPartnershipData.id] = true;
                                     setOpen(newBottomSheetStates);
                                     setList(false);
                                 }}
-                            />
+                                style={{
+                                    width: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
+                                    height: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
+                                }}
+                            >
+                                {category[filteredPartnershipData.category as TCategoryKey].icon}
+                            </div>
                         </CustomOverlayMap>
                     ))}
                 </MapComponent>

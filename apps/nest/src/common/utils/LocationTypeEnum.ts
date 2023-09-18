@@ -1,0 +1,15 @@
+export enum LocationType {
+  BUS_STOP = '버스 정류장',
+  RESTAURANT = '일반음식점',
+  CAFE = '카페/디저트',
+  PUB = '주점',
+  ENTERTAINMENT = '엔터테이먼트',
+  BEAUTY = '뷰티',
+  HEALTH = '의료/건강',
+  ETC = '기타',
+  FACILITIES = '편의시설',
+  PRINTER = '프린터',
+  CAFETERIA = '교내식당',
+  STORE = '편의점',
+  VENDING = '자판기',
+}

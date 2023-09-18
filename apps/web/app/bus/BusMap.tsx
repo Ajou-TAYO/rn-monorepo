@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Map, CustomOverlayMap, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, MapMarker } from "react-kakao-maps-sdk";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import axios from "axios";
-import { MapComponent } from "../components/Map";
+import { MapComponent, defaultMapLevel, mapLevel } from "../components/Map";
+import "../../styles/land.css";
 
 function BusOverlay({ position }: { position: { x: number; y: number } | null }) {
     if (!position) return null;
@@ -13,15 +14,15 @@ function BusOverlay({ position }: { position: { x: number; y: number } | null })
         <CustomOverlayMap position={{ lat: position.x, lng: position.y }} yAnchor={1}>
             <div
                 style={{
-                    width: "36px",
-                    height: "36px",
+                    width: 36 * (defaultMapLevel / mapLevel) + "px",
+                    height: 36 * (defaultMapLevel / mapLevel) + "px",
                 }}
             >
                 <img
                     src="/bus.png"
                     style={{
-                        width: "36px",
-                        height: "36px",
+                        width: 36 * (defaultMapLevel / mapLevel) + "px",
+                        height: 36 * (defaultMapLevel / mapLevel) + "px",
                         transform: `translate(0%, 50%) scaleX(-1)`,
                     }}
                 />
@@ -42,10 +43,6 @@ export default function () {
     const [isWsOpened, setIsWsOpened] = useState(false);
     const [stopPosition, setStopPosition] = useState<any[]>([]);
     const [stopToast, setStopToast] = useState(new Array(5).fill(false));
-
-    const [loading, error] = useKakaoLoader({
-        appkey: "f1494ad8df2a9262259940f691221ac9", // 발급 받은 APPKEY
-    });
 
     useEffect(() => {
         const rws = new ReconnectingWebSocket("ws://121.137.66.90:8080/bin");
@@ -87,35 +84,28 @@ export default function () {
     return (
         <MapComponent lat={37.28022225696853} lng={127.043874901048} level={6}>
             {stopPosition.length > 0 &&
-                stopPosition.map(stop => (
+                stopPosition.map((stop, id) => (
                     <MapMarker
-                        key={`${stop.lat}-${stop.lng}`} // Use a unique key for each marker to trigger re-rendering
+                        key={id} // Use a unique key for each marker to trigger re-rendering
                         position={{ lat: stop.lat, lng: stop.lng }}
                         image={{
                             src: "/bus_stop.png",
                             size: {
-                                width: 25,
-                                height: 30,
+                                width: 10 * (defaultMapLevel / mapLevel),
+                                height: 15 * (defaultMapLevel / mapLevel),
                             },
                         }}
                         onClick={() => {
                             setStopToast(prevToast => {
-                                const updatedToast = [...prevToast];
+                                const updatedToast = prevToast.fill(false);
                                 updatedToast[stop.id - 1] = true;
-                                return updatedToast;
-                            });
-                        }}
-                        onMouseOut={() => {
-                            setStopToast(prevToast => {
-                                const updatedToast = [...prevToast];
-                                updatedToast[stop.id - 1] = false;
                                 return updatedToast;
                             });
                         }}
                     >
                         {stopToast[stop.id - 1] && (
                             <div
-                                style={{ padding: "1px", color: "#000", flex: "1 1 0%" }}
+                                className="px-4 py-2 w-fit h-fit flex flex-col items-center justify-center bg-white flex-1 space-y-6"
                                 onClick={() => {
                                     setStopToast(prevToast => {
                                         const updatedToast = [...prevToast];
@@ -123,21 +113,29 @@ export default function () {
                                         return updatedToast;
                                     });
                                 }}
+                                key={stop.id}
                             >
-                                {stop.name}
-                                <button
-                                    type="button"
-                                    className="border-1 border-black-500 border-solid mx-1"
-                                    onClick={() => {
-                                        setStopToast(prevToast => {
-                                            const updatedToast = [...prevToast];
-                                            updatedToast[stop.id - 1] = false;
-                                            return updatedToast;
-                                        });
-                                    }}
-                                >
-                                    X
-                                </button>
+                                <div className="flex items-center justify-between w-full">
+                                    <p className="w-48 h-fit text-2xl">{stop.name}</p>
+                                    <button
+                                        type="button"
+                                        className="text-3xl leading-1"
+                                        onClick={() => {
+                                            setStopToast(prevToast => {
+                                                const updatedToast = [...prevToast];
+                                                updatedToast[stop.id - 1] = false;
+                                                return updatedToast;
+                                            });
+                                        }}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                                <img
+                                    src={stop.image?.url}
+                                    className="w-[30rem] h-[30rem] border-2"
+                                    alt="정류장 이미지 들어갈 곳"
+                                />
                             </div>
                         )}
                     </MapMarker>
