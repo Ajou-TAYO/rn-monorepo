@@ -13,7 +13,7 @@ import { Resizer } from "../components/Resizer";
 
 async function getData() {
     // Fetch data from an API or any other source
-    const response = await axios.get("http://127.0.0.1:8080/partnerships", {});
+    const response = await axios.get("http://121.137.66.90:8080/partnerships", {});
     return response.data.data;
 }
 

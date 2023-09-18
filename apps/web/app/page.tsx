@@ -16,7 +16,7 @@ export default function LandingPage() {
     useEffect(() => {
         // Axios를 사용하여 데이터 가져오기
         axios
-            .get("http://127.0.0.1:8080/notices/latest") // 공지사항 API 엔드포인트를 여기에 입력
+            .get("http://121.137.66.90:8080/notices/latest") // 공지사항 API 엔드포인트를 여기에 입력
             .then(response => {
                 console.log(response.data);
                 setNotices(response.data); // 데이터를 상태에 설정

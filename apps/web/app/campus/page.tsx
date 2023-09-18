@@ -17,7 +17,7 @@ import { MapComponent } from "../components/Map";
 
 async function getData() {
     // Fetch data from an API or any other source
-    const response = await axios.get("http://127.0.0.1:8080/campus", {});
+    const response = await axios.get("http://121.137.66.90:8080/campus", {});
     return response.data.data;
 }
 

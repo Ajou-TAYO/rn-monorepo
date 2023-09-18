@@ -12,7 +12,7 @@ function ChangeNick() {
         console.log(nickname);
         return axios
             .post(
-                "http://127.0.0.1:8080/my/nickname/reset",
+                "http://121.137.66.90:8080/my/nickname/reset",
                 {
                     // originalNickname : ,
                     newNickname: nickname,

@@ -15,7 +15,7 @@ function ChangePw() {
         console.log(pw);
         return axios
             .post(
-                "http://127.0.0.1:8080/my/password/reset",
+                "http://121.137.66.90:8080/my/password/reset",
                 {
                     originalPw: orgpw,
                     newPw: pw,
