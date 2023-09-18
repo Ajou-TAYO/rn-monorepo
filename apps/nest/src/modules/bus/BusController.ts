@@ -52,6 +52,14 @@ export class BusController {
     return this.dtoMapper.mapToDTOList(notices, BusNoticeResponseDTO);
   }
 
+  @Get('/notices/latest')
+  async getLatestNotice() {
+    const notice = await this.busNoticeService.getLatest();
+    if (!notice) {
+      throw new NotFoundException('BusNotices not found');
+    }
+    return new BusNoticeResponseDTO(notice);
+  }
   @Get('/notices/:id')
   async findByNoticeId(@Param('id') id: string) {
     const notice = await this.busNoticeService.findById(+id);
