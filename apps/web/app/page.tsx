@@ -5,7 +5,7 @@ import axios from "axios";
 import { FiInstagram } from "react-icons/fi";
 import { FaFacebookSquare } from "react-icons/fa";
 import { RiFeedbackFill } from "react-icons/ri";
-import "@ajou-life/web/styles/land.css";
+import "../styles/land.css";
 import TopBar from "./components/TopBar";
 import BottomTab from "./components/BottomNav";
 import { Resizer } from "./components/Resizer";
