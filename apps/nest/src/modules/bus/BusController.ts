@@ -3,11 +3,8 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   NotFoundException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { BusService } from './services/BusService';
 import { MyWebSocketGateway } from '@/config/websocket/WebSocketGateway';
@@ -47,9 +44,17 @@ export class BusController {
     return this.dtoMapper.mapToDTOList(notices, BusNoticeResponseDTO);
   }
 
+  @Get('/notices/latest')
+  async getLatestNotice() {
+    const notice = await this.busNoticeService.getLatest();
+    if (!notice) {
+      throw new NotFoundException('BusNotices not found');
+    }
+    return new BusNoticeResponseDTO(notice);
+  }
   @Get('/notices/:id')
-  async findByNoticeId(@Param('id') id: number) {
-    const notice = await this.busNoticeService.findById(id);
+  async findByNoticeId(@Param('id') id: string) {
+    const notice = await this.busNoticeService.findById(+id);
     if (!notice) {
       throw new NotFoundException('BusNotice not found');
     }
@@ -66,8 +71,8 @@ export class BusController {
   }
 
   @Get('/stops/:id')
-  async findByBusStopId(@Param('id') id: number) {
-    const busStop = await this.busStopService.findById(id);
+  async findByBusStopId(@Param('id') id: string) {
+    const busStop = await this.busStopService.findById(+id);
     if (!busStop) {
       throw new NotFoundException('BusStop not found');
     }
@@ -84,8 +89,8 @@ export class BusController {
   }
 
   @Get('/routes/:id')
-  async findByBusRoutesId(@Param('id') id: number) {
-    const route = await this.busRouteService.findById(id);
+  async findByBusRoutesId(@Param('id') id: string) {
+    const route = await this.busRouteService.findById(+id);
     if (!route) {
       throw new NotFoundException('BusRoute not found');
     }

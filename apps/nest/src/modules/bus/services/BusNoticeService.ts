@@ -10,6 +10,13 @@ export class BusNoticeService {
     private readonly busNoticeRepository: Repository<BusNotice>,
   ) {}
 
+  public async getLatest(): Promise<BusNotice> {
+    const notices = await this.busNoticeRepository.find({
+      order: { id: 'DESC' },
+      take: 1,
+    });
+    return notices[0];
+  }
   public async getAll(): Promise<BusNotice[]> {
     return this.busNoticeRepository.find();
   }

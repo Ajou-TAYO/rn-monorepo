@@ -17,9 +17,6 @@ export class Notice {
   @Column({ nullable: false })
   content: string;
 
-  @Column({ default: 0, nullable: false })
-  count: number;
-
   @Column({ nullable: true })
   nickname: string;
 
