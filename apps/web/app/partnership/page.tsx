@@ -72,6 +72,10 @@ export default function AllianceMap() {
         );
     }, [partnershipDatas, categoryFilterStatus]);
 
+    const findData = (id: number) => {
+        return partnershipDatas.find(partnershipData => partnershipData.id === id);
+    };
+
     function onDismiss(markerindex: number) {
         setOpen(markerindex);
         setList(true);
@@ -105,77 +109,74 @@ export default function AllianceMap() {
                             </div>
                         </CustomOverlayMap>
                     ))}
-                    {list && (
-                        <BottomSheet>
-                            <div className="px-2 my-2 flex flex-row gap-2 justify-around">
-                                {categoryKeys.map(categoryKey => (
-                                    <button
-                                        className={`flex flex-row rounded-full border-2 p-1 w-fit h-8 ${
-                                            categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
-                                        } `}
+                </MapComponent>
+                {list && (
+                    <BottomSheet>
+                        <div className="px-2 my-2 flex flex-row gap-2 justify-around">
+                            {categoryKeys.map(categoryKey => (
+                                <button
+                                    className={`flex flex-row rounded-full border-2 p-1 w-fit h-8 ${
+                                        categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
+                                    } `}
+                                    onClick={() => {
+                                        setCategoryFilterStatus(prev => ({
+                                            ...prev,
+                                            [categoryKey]: !prev[categoryKey],
+                                        }));
+                                    }}
+                                >
+                                    <div
+                                        className={`mx-1 my-auto h-5 w-5 rounded-full ${categoryType[categoryKey].className} items-center justify-center flex`}
+                                    >
+                                        {categoryType[categoryKey].icon}
+                                    </div>
+                                    <p
+                                        className={`mr-1 md:text-base text-sm ${
+                                            categoryFilterStatus[categoryKey] ? "font-bold" : ""
+                                        }`}
+                                    >
+                                        {categoryType[categoryKey].title}
+                                    </p>
+                                </button>
+                            ))}
+                        </div>
+
+                        <div id="partnershipContainer" className="pt-4 flex flex-col gap-3 px-4">
+                            {filteredPartnershipDatas.map(filteredPartnershipData => (
+                                <div className="card bg-base-100 ">
+                                    <div
+                                        className="flex py-4 px-2 space-x-4 border-2 rounded-xl"
                                         onClick={() => {
-                                            setCategoryFilterStatus(prev => ({
-                                                ...prev,
-                                                [categoryKey]: !prev[categoryKey],
-                                            }));
+                                            setCenter({
+                                                lat: filteredPartnershipData.lat,
+                                                lng: filteredPartnershipData.lng,
+                                            });
                                         }}
                                     >
-                                        <div
-                                            className={`mx-1 my-auto h-5 w-5 rounded-full ${categoryType[categoryKey].className} items-center justify-center flex`}
-                                        >
-                                            {categoryType[categoryKey].icon}
+                                        <div>
+                                            <span
+                                                className={`rounded-full px-2 ${
+                                                    categoryType[filteredPartnershipData.category as TCategoryKey]
+                                                        .className
+                                                }`}
+                                            >
+                                                {categoryType[filteredPartnershipData.category as TCategoryKey].title}
+                                            </span>
                                         </div>
-                                        <p
-                                            className={`mr-1 md:text-base text-sm ${
-                                                categoryFilterStatus[categoryKey] ? "font-bold" : ""
-                                            }`}
-                                        >
-                                            {categoryType[categoryKey].title}
-                                        </p>
-                                    </button>
-                                ))}
-                            </div>
-
-                            <div id="partnershipContainer" className="pt-4 flex flex-col gap-3 px-4">
-                                {filteredPartnershipDatas.map(filteredPartnershipData => (
-                                    <div className="card bg-base-100 ">
-                                        <div
-                                            className="flex py-4 px-2 space-x-4 border-2 rounded-xl"
-                                            onClick={() => {
-                                                setCenter({
-                                                    lat: filteredPartnershipData.lat,
-                                                    lng: filteredPartnershipData.lng,
-                                                });
-                                            }}
-                                        >
-                                            <div>
-                                                <span
-                                                    className={`rounded-full px-2 ${
-                                                        categoryType[filteredPartnershipData.category as TCategoryKey]
-                                                            .className
-                                                    }`}
-                                                >
-                                                    {
-                                                        categoryType[filteredPartnershipData.category as TCategoryKey]
-                                                            .title
-                                                    }
-                                                </span>
-                                            </div>
-                                            <h2 className="card-title">{filteredPartnershipData.name}</h2>
-                                        </div>
+                                        <h2 className="card-title">{filteredPartnershipData.name}</h2>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
+                        </div>
 
-                            <div className="h-20" />
-                        </BottomSheet>
-                    )}
-                </MapComponent>
+                        <div className="h-20" />
+                    </BottomSheet>
+                )}
                 {Open !== false && (
                     <BottomSheet>
                         <div className="flex flex-col gap-y-4 items-center">
                             <div className="flex justify-center items-center gap-x-3 w-32 h-10">
-                                {category[findData(Open as number)?.category].icon}
+                                {categoryType[findData(Open as number)?.category].icon}
                                 <p className="text-2xl object-contain font-bold px-2 align-baseline h-10">
                                     {findData(Open as number)?.name as string}
                                 </p>

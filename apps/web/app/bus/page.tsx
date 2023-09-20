@@ -11,7 +11,6 @@ import "../../styles/land.css";
 import BottomTab from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import Link from "next/link";
-import { Resizer } from "../components/Resizer";
 
 function currentTimer() {
     const date = new Date();
@@ -120,18 +119,17 @@ export default function BusPage() {
     }, 30000);
 
     return (
-        <Resizer>
-            <div className="h-screen w-screen">
-                <TopBar />
-                <BusMap />
+        <div className="h-screen w-screen">
+            <TopBar />
+            <BusMap />
 
-                <div className="absolute inset-x-0 top-20 z-10 flex flex-col items-center">
-                    <div className="badge badge-error gap-2">
-                        <Link className="text-xs bg-yellow-500 rounded-full px-3 py-1" href="/bus/busboarddetail">
-                            <span className="mr-2 font-bold">[공지]</span>
-                            {boardContent}
-                        </Link>
-                        {/* <svg
+            <div className="absolute inset-x-0 top-20 z-10 flex flex-col items-center">
+                <div className="badge badge-error gap-2">
+                    <Link className="text-xs bg-yellow-500 rounded-full px-3 py-1" href="/bus/busboarddetail">
+                        <span className="mr-2 font-bold">[공지]</span>
+                        {boardContent}
+                    </Link>
+                    {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -139,10 +137,10 @@ export default function BusPage() {
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                     </svg> */}
-                    </div>
                 </div>
+            </div>
 
-                {/* <div className="fixed right-2 top-20 flex items-center justify-center">
+            {/* <div className="fixed right-2 top-20 flex items-center justify-center">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500">
                         <button type="button" onClick={setModal}>
                             <img
@@ -168,88 +166,84 @@ export default function BusPage() {
                     </div>
                 </div> */}
 
-                {!modalIsOpen && (
-                    <BottomSheet>
-                        <div className="flex flex-col gap-4 px-4">
-                            <h2 className="font-bold">운행정보 </h2>
-                            <div className="flex flex-col rounded-2xl bg-white p-5 shadow">
-                                <header className="mb-4 flex">
-                                    <p className="font-bold">아주대 - 광교중앙역</p>
-                                    <div
-                                        className="ml-auto right-0 text-white bg-blue-600 py-1 px-2 rounded-lg text-sm"
-                                        onClick={() => {
-                                            setTimeTable(!timeTable);
-                                        }}
-                                    >
-                                        시간표보기
+            {!modalIsOpen && (
+                <BottomSheet>
+                    <div className="flex flex-col gap-4 px-4">
+                        <h2 className="font-bold">운행정보 </h2>
+                        <div className="flex flex-col rounded-2xl bg-white p-5 shadow">
+                            <header className="mb-4 flex">
+                                <p className="font-bold">아주대 - 광교중앙역</p>
+                                <div
+                                    className="ml-auto right-0 text-white bg-blue-600 py-1 px-2 rounded-lg text-sm"
+                                    onClick={() => {
+                                        setTimeTable(!timeTable);
+                                    }}
+                                >
+                                    시간표보기
+                                </div>
+                            </header>
+
+                            <ul className="divide-y pl-4">
+                                <li className="flex flex-row items-center justify-between text-sm">
+                                    <div className="font-bold">아주대행</div>
+
+                                    <div className="flex flex-col text-red-500">
+                                        <div className="ml-auto right-0">{queue[0]}</div>
+                                        <div className="ml-auto right-0">{queue[1]}</div>
                                     </div>
-                                </header>
+                                </li>
 
-                                <ul className="divide-y pl-4">
-                                    <li className="flex flex-row items-center justify-between text-sm">
-                                        <div className="font-bold">아주대행</div>
+                                <li className="flex flex-row items-center justify-between text-sm">
+                                    <div className="font-bold">광교중앙역행</div>
 
-                                        <div className="flex flex-col text-red-500">
-                                            <div className="ml-auto right-0">{queue[0]}</div>
-                                            <div className="ml-auto right-0">{queue[1]}</div>
-                                        </div>
-                                    </li>
-
-                                    <li className="flex flex-row items-center justify-between text-sm">
-                                        <div className="font-bold">광교중앙역행</div>
-
-                                        <div className="flex flex-col text-red-500">
-                                            <div className="ml-auto right-0">{queue[2]}</div>
-                                            <div className="ml-auto right-0">{queue[3]}</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="flex flex-col rounded-2xl bg-white p-5 shadow">
-                                <header className="mb-4 font-bold">아주대 - 수원역</header>
-
-                                <ul className="divide-y pl-4">
-                                    <li className="flex flex-row items-center justify-between text-sm">
-                                        <div className="font-bold">아주대행</div>
-
-                                        <div className="flex flex-col text-red-500">
-                                            <div className="ml-auto right-0">{queue[4]}</div>
-                                            <div className="ml-auto right-0">{queue[5]}</div>
-                                        </div>
-                                    </li>
-
-                                    <li className="flex flex-row items-center justify-between text-sm">
-                                        <div className="font-bold">수원역행</div>
-
-                                        <div className="flex flex-col text-red-500">
-                                            <div className="ml-auto right-0">{queue[6]}</div>
-                                            <div className="ml-auto right-0">{queue[7]}</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <div className="flex flex-col text-red-500">
+                                        <div className="ml-auto right-0">{queue[2]}</div>
+                                        <div className="ml-auto right-0">{queue[3]}</div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                    </BottomSheet>
-                )}
+                        <div className="flex flex-col rounded-2xl bg-white p-5 shadow">
+                            <ul>
+                                <header className="mb-4 font-bold">아주대 - 수원역</header>
+                                <li>
+                                    <div className="flex flex-col text-red-500">
+                                        <div className="ml-auto right-0">{queue[4]}</div>
+                                        <div className="ml-auto right-0">{queue[5]}</div>
+                                    </div>
+                                </li>
 
-                <BottomNav />
-                <ReactModal
-                    isOpen={timeTable}
-                    contentLabel="BusTimeTable Modal"
-                    onRequestClose={() => setTimeTable(false)}
-                    style={{
-                        content: {
-                            width: "500px", // Set the desired width
-                            height: "700px", // Set the desired height
-                            margin: "auto", // Center the modal horizontally
-                        },
-                    }}
-                >
-                    {timeTable && <img src="/timeTable.png" className="h-full w-full" />}
-                </ReactModal>
+                                <li className="flex flex-row items-center justify-between text-sm">
+                                    <div className="font-bold">수원역행</div>
 
-                <BottomTab />
-            </div>
-        </Resizer>
+                                    <div className="flex flex-col text-red-500">
+                                        <div className="ml-auto right-0">{queue[6]}</div>
+                                        <div className="ml-auto right-0">{queue[7]}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </BottomSheet>
+            )}
+
+            <BottomNav />
+            <ReactModal
+                isOpen={timeTable}
+                onRequestClose={setModal}
+                contentLabel="BusTimeTable Modal"
+                style={{
+                    content: {
+                        width: "500px", // Set the desired width
+                        height: "700px", // Set the desired height
+                        margin: "auto", // Center the modal horizontally
+                    },
+                }}
+            >
+                {timeTable && <img src="/timeTable.png" className="h-full w-full" />}
+            </ReactModal>
+
+            <BottomTab />
+        </div>
     );
 }
