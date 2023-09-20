@@ -15,7 +15,7 @@ export let mapLevel = defaultMapLevel;
 
 export const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, level, children }) => {
     const [loading, error] = useKakaoLoader({
-        appkey: "f1494ad8df2a9262259940f691221ac9",
+        appkey: "78db97fad296256c4498faa49d235692",
     });
 
     const [, updateState] = useState({});
