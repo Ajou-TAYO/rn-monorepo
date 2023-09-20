@@ -1,6 +1,6 @@
 import { bootstrap } from '@/bootstrap';
 
-const port = process.env.NODE_SERVER_PORT
+const port = process.env.NODE_SERVER_PORT;
 
 bootstrap()
   .then((app) => app.listen(port))

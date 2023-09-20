@@ -5,7 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete, NotFoundException,
+  Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { CampusService } from './CampusService';
 import { CampusAmenityResponseDTO } from '@/modules/campus/dtos/responses/CampusAmenityResponseDTO';

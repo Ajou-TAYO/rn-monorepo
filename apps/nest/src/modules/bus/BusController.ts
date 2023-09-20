@@ -31,14 +31,6 @@ export class BusController {
     private readonly dtoMapper: DTOMapper, // DtoMapper를 주입받습니다.
   ) {}
 
-  @Post()
-  async getBusPosition(@Body() body: { bus_id: string; pos: string }) {
-    const { bus_id, pos } = body;
-    await this.busService.getBusPosition(bus_id, pos);
-
-    return { message: `success ${bus_id} ${pos}` };
-  }
-
   @Get('/websocket')
   async getRedisData() {
     const data = await this.busService.handleCron();
