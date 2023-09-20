@@ -1,8 +1,9 @@
 "use client";
 
-import { CustomOverlayMap, Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, Map, MapMarker, useInjectKakaoMapApi } from "react-kakao-maps-sdk";
 import { Resizer } from "./Resizer";
 import { useCallback, useEffect, useState } from "react";
+import Script from "next/script";
 
 interface MapComponentProps {
     lat: number;
@@ -15,9 +16,9 @@ export const defaultMapLevel = 6;
 export let mapLevel = defaultMapLevel;
 
 export const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, level, children }) => {
-    const [loading, error] = useKakaoLoader({
-        appkey: "f1494ad8df2a9262259940f691221ac9",
-    });
+    // const { loading, error } = useInjectKakaoMapApi({
+    //     appkey: "f1494ad8df2a9262259940f691221ac9",
+    // });
 
     const [, updateState] = useState({});
     const forceUpdate = useCallback(() => {
@@ -72,6 +73,10 @@ export const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, level, chi
 
     return (
         <Resizer>
+            <Script
+                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f1494ad8df2a9262259940f691221ac9&libraries=services,clusterer&autoload=false"
+                strategy="beforeInteractive"
+            />
             <Map
                 center={{ lat, lng }}
                 level={level}

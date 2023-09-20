@@ -13,8 +13,8 @@ const BusBoardDetail = () => {
     useEffect(() => {
         const getBoard = async () => {
             try {
-                const response = await axios.get("http://121.137.66.90:8080/bus/notices", {});
-                setBoards(response.data.data);
+                const response = await axios.get("http://121.137.66.90:9000/bus/notices", {});
+                setBoards(response.data);
             } catch (error) {
                 console.error(error);
                 setBoards([{ bus_notice_id: 0, url: "", title: "" }]);

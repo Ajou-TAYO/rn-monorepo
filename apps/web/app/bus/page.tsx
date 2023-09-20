@@ -103,8 +103,8 @@ export default function BusPage() {
     useEffect(() => {
         const getBoard = async () => {
             try {
-                const response = await axios.get("http://121.137.66.90:8080/bus/notices", {});
-                setBoardContent(response.data.data[0].title);
+                const response = await axios.get("http://121.137.66.90:9000/bus/notices", {});
+                setBoardContent(response.data[0].title);
             } catch (error) {
                 console.error(error);
                 setBoardContent("");
@@ -235,8 +235,8 @@ export default function BusPage() {
                 <BottomNav />
                 <ReactModal
                     isOpen={timeTable}
-                    onRequestClose={setModal}
                     contentLabel="BusTimeTable Modal"
+                    onRequestClose={() => setTimeTable(false)}
                     style={{
                         content: {
                             width: "500px", // Set the desired width
