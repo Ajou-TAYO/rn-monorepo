@@ -3,13 +3,9 @@
 import React, { ReactNode, useEffect } from "react";
 
 export const Resizer: React.FC<{ children: ReactNode }> = ({ children }) => {
-    if (typeof window === "undefined") {
-        return <>{children}</>;
-    }
-
     useEffect(() => {
         // ! FIXME: TEMP SSR PATCH
-        if (typeof window === "undefined") {
+        if (typeof document === "undefined") {
             return;
         }
 
