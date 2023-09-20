@@ -4,6 +4,11 @@ import React, { ReactNode, useEffect } from "react";
 
 export const Resizer: React.FC<{ children: ReactNode }> = ({ children }) => {
     useEffect(() => {
+        // ! FIXME: TEMP SSR PATCH
+        if (typeof window === "undefined") {
+            return;
+        }
+
         const resizeFontSize = () => {
             const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
             const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
