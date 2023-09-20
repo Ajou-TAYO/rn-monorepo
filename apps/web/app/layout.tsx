@@ -9,7 +9,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body>
-                <Resizer>{children}</Resizer>
+                {/* <Resizer> */}
+                {children}
+                {/* </Resizer> */}
             </body>
         </html>
     );
