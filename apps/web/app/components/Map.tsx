@@ -1,7 +1,6 @@
 "use client";
 
 import { CustomOverlayMap, Map, MapMarker, useKakaoLoader } from "react-kakao-maps-sdk";
-import { Resizer } from "./Resizer";
 import { useCallback, useEffect, useState } from "react";
 
 interface MapComponentProps {
@@ -71,23 +70,21 @@ export const MapComponent: React.FC<MapComponentProps> = ({ lat, lng, level, chi
     }, []);
 
     return (
-        <Resizer>
-            <Map
-                center={{ lat, lng }}
-                level={level}
-                className="z-0 h-[90vh] w-screen"
-                onZoomChanged={map => {
-                    mapLevel = map.getLevel();
-                    forceUpdate();
-                }}
-            >
-                {userState.isLoading && (
-                    <CustomOverlayMap position={userState.center}>
-                        <div className="p-3 bg-blue-500 rounded-full border-2 border-black" />
-                    </CustomOverlayMap>
-                )}
-                {children}
-            </Map>
-        </Resizer>
+        <Map
+            center={{ lat, lng }}
+            level={level}
+            className="z-0 h-[90vh] w-screen"
+            onZoomChanged={map => {
+                mapLevel = map.getLevel();
+                forceUpdate();
+            }}
+        >
+            {userState.isLoading && (
+                <CustomOverlayMap position={userState.center}>
+                    <div className="p-3 bg-blue-500 rounded-full border-2 border-black" />
+                </CustomOverlayMap>
+            )}
+            {children}
+        </Map>
     );
 };

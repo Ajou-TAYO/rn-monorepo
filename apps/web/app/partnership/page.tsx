@@ -9,7 +9,6 @@ import TopBar from "../components/TopBar";
 import { BiCoffee, BiDrink } from "react-icons/bi";
 import { PiBowlFood, PiGuitar } from "react-icons/pi";
 import { MapComponent, defaultMapLevel, mapLevel } from "../components/Map";
-import { Resizer } from "../components/Resizer";
 
 async function getData() {
     // Fetch data from an API or any other source
@@ -80,98 +79,93 @@ export default function AllianceMap() {
     }
 
     return (
-        <Resizer>
-            <div className="h-screen w-screen">
-                <TopBar />
+        <div className="h-screen w-screen">
+            <TopBar />
 
-                <MapComponent lat={center.lat} lng={center.lng} level={3}>
-                    {filteredPartnershipDatas.map((filteredPartnershipData, index) => (
-                        <CustomOverlayMap
-                            position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}
+            <MapComponent lat={center.lat} lng={center.lng} level={3}>
+                {filteredPartnershipDatas.map((filteredPartnershipData, index) => (
+                    <CustomOverlayMap position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}>
+                        <div
+                            className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 border-black flex items-center justify-center ${
+                                categoryType[filteredPartnershipData.category as TCategoryKey].className
+                            }`}
+                            onClick={() => {
+                                const newBottomSheetStates = [...Open];
+                                newBottomSheetStates[filteredPartnershipData.id] = true;
+                                setOpen(newBottomSheetStates);
+                                setList(false);
+                            }}
+                            style={{
+                                width: 0.8 * (defaultMapLevel / mapLevel) + "rem",
+                                height: 0.8 * (defaultMapLevel / mapLevel) + "rem",
+                            }}
+                            key={index}
                         >
-                            <div
-                                className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 border-black flex items-center justify-center ${
-                                    categoryType[filteredPartnershipData.category as TCategoryKey].className
-                                }`}
+                            {categoryType[filteredPartnershipData.category as TCategoryKey].icon}
+                        </div>
+                    </CustomOverlayMap>
+                ))}
+                <BottomSheet>
+                    <div className="px-2 my-2 flex flex-row gap-2 justify-around">
+                        {categoryKeys.map(categoryKey => (
+                            <button
+                                className={`flex flex-row rounded-full border-2 p-1 w-fit h-8 ${
+                                    categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
+                                } `}
                                 onClick={() => {
-                                    const newBottomSheetStates = [...Open];
-                                    newBottomSheetStates[filteredPartnershipData.id] = true;
-                                    setOpen(newBottomSheetStates);
-                                    setList(false);
+                                    setCategoryFilterStatus(prev => ({
+                                        ...prev,
+                                        [categoryKey]: !prev[categoryKey],
+                                    }));
                                 }}
-                                style={{
-                                    width: 0.8 * (defaultMapLevel / mapLevel) + "rem",
-                                    height: 0.8 * (defaultMapLevel / mapLevel) + "rem",
-                                }}
-                                key={index}
                             >
-                                {categoryType[filteredPartnershipData.category as TCategoryKey].icon}
-                            </div>
-                        </CustomOverlayMap>
-                    ))}
-                    <BottomSheet>
-                        <div className="px-2 my-2 flex flex-row gap-2 justify-around">
-                            {categoryKeys.map(categoryKey => (
-                                <button
-                                    className={`flex flex-row rounded-full border-2 p-1 w-fit h-8 ${
-                                        categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
-                                    } `}
+                                <div
+                                    className={`mx-1 my-auto h-5 w-5 rounded-full ${categoryType[categoryKey].className} items-center justify-center flex`}
+                                >
+                                    {categoryType[categoryKey].icon}
+                                </div>
+                                <p
+                                    className={`mr-1 md:text-base text-sm ${
+                                        categoryFilterStatus[categoryKey] ? "font-bold" : ""
+                                    }`}
+                                >
+                                    {categoryType[categoryKey].title}
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div id="partnershipContainer" className="pt-4 flex flex-col gap-3 px-4">
+                        {filteredPartnershipDatas.map(filteredPartnershipData => (
+                            <div className="card bg-base-100 ">
+                                <div
+                                    className="flex py-4 px-2 space-x-4 border-2 rounded-xl"
                                     onClick={() => {
-                                        setCategoryFilterStatus(prev => ({
-                                            ...prev,
-                                            [categoryKey]: !prev[categoryKey],
-                                        }));
+                                        setCenter({
+                                            lat: filteredPartnershipData.lat,
+                                            lng: filteredPartnershipData.lng,
+                                        });
                                     }}
                                 >
-                                    <div
-                                        className={`mx-1 my-auto h-5 w-5 rounded-full ${categoryType[categoryKey].className} items-center justify-center flex`}
-                                    >
-                                        {categoryType[categoryKey].icon}
+                                    <div>
+                                        <span
+                                            className={`rounded-full px-2 ${
+                                                categoryType[filteredPartnershipData.category as TCategoryKey].className
+                                            }`}
+                                        >
+                                            {categoryType[filteredPartnershipData.category as TCategoryKey].title}
+                                        </span>
                                     </div>
-                                    <p
-                                        className={`mr-1 md:text-base text-sm ${
-                                            categoryFilterStatus[categoryKey] ? "font-bold" : ""
-                                        }`}
-                                    >
-                                        {categoryType[categoryKey].title}
-                                    </p>
-                                </button>
-                            ))}
-                        </div>
-
-                        <div id="partnershipContainer" className="pt-4 flex flex-col gap-3 px-4">
-                            {filteredPartnershipDatas.map(filteredPartnershipData => (
-                                <div className="card bg-base-100 ">
-                                    <div
-                                        className="flex py-4 px-2 space-x-4 border-2 rounded-xl"
-                                        onClick={() => {
-                                            setCenter({
-                                                lat: filteredPartnershipData.lat,
-                                                lng: filteredPartnershipData.lng,
-                                            });
-                                        }}
-                                    >
-                                        <div>
-                                            <span
-                                                className={`rounded-full px-2 ${
-                                                    categoryType[filteredPartnershipData.category as TCategoryKey]
-                                                        .className
-                                                }`}
-                                            >
-                                                {categoryType[filteredPartnershipData.category as TCategoryKey].title}
-                                            </span>
-                                        </div>
-                                        <h2 className="card-title">{filteredPartnershipData.name}</h2>
-                                    </div>
+                                    <h2 className="card-title">{filteredPartnershipData.name}</h2>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
+                    </div>
 
-                        <div className="h-20" />
-                    </BottomSheet>
-                </MapComponent>
-                <BottomNav />
-            </div>
-        </Resizer>
+                    <div className="h-20" />
+                </BottomSheet>
+            </MapComponent>
+            <BottomNav />
+        </div>
     );
 }

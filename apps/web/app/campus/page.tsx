@@ -12,7 +12,6 @@ import { MdOutlineLocalConvenienceStore } from "react-icons/md";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import BottomSheet from "../components/BottomSheet";
-import { Resizer } from "../components/Resizer";
 import { MapComponent, defaultMapLevel, mapLevel } from "../components/Map";
 
 async function getData() {
@@ -88,62 +87,57 @@ export default function SchoolMap() {
     }
 
     return (
-        <Resizer>
-            <div className="h-screen w-screen">
-                <TopBar />
+        <div className="h-screen w-screen">
+            <TopBar />
 
-                <MapComponent lat={center.lat} lng={center.lng} level={3}>
-                    {filteredPartnershipDatas.map(filteredPartnershipData => (
-                        <CustomOverlayMap
-                            position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}
+            <MapComponent lat={center.lat} lng={center.lng} level={3}>
+                {filteredPartnershipDatas.map(filteredPartnershipData => (
+                    <CustomOverlayMap position={{ lat: filteredPartnershipData.lat, lng: filteredPartnershipData.lng }}>
+                        <div
+                            className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 bg-white border-slate-700 flex justify-center items-center`}
+                            onClick={() => {
+                                const newBottomSheetStates = [...Open];
+                                newBottomSheetStates[filteredPartnershipData.id] = true;
+                                setOpen(newBottomSheetStates);
+                                setList(false);
+                            }}
+                            style={{
+                                width: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
+                                height: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
+                            }}
                         >
-                            <div
-                                className={`translate-x-1/2 translate-y-1/2 rounded-full border-2 bg-white border-slate-700 flex justify-center items-center`}
+                            {category[filteredPartnershipData.category as TCategoryKey].icon}
+                        </div>
+                    </CustomOverlayMap>
+                ))}
+            </MapComponent>
+            <div className="absolute inset-0 w-screen h-[90vh] flex justify-center items-end pointer-events-none">
+                <div className="absolute w-[34rem] h-24 bg-white border-2 border-black rounded-full flex items-center justify-center pointer-events-auto">
+                    <div className="flex justify-center">
+                        {categoryKeys.map(categoryKey => (
+                            <button
+                                className={`flex flex-col rounded-full p-1 w-20 h-20 items-center`}
                                 onClick={() => {
-                                    const newBottomSheetStates = [...Open];
-                                    newBottomSheetStates[filteredPartnershipData.id] = true;
-                                    setOpen(newBottomSheetStates);
-                                    setList(false);
-                                }}
-                                style={{
-                                    width: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
-                                    height: Math.min(0.8 * (defaultMapLevel / mapLevel), 3) + "rem",
+                                    setCategoryFilterStatus(prev => ({
+                                        ...prev,
+                                        [categoryKey]: !prev[categoryKey],
+                                    }));
                                 }}
                             >
-                                {category[filteredPartnershipData.category as TCategoryKey].icon}
-                            </div>
-                        </CustomOverlayMap>
-                    ))}
-                </MapComponent>
-                <div className="absolute inset-0 w-screen h-[90vh] flex justify-center items-end pointer-events-none">
-                    <div className="absolute w-[34rem] h-24 bg-white border-2 border-black rounded-full flex items-center justify-center pointer-events-auto">
-                        <div className="flex justify-center">
-                            {categoryKeys.map(categoryKey => (
-                                <button
-                                    className={`flex flex-col rounded-full p-1 w-20 h-20 items-center`}
-                                    onClick={() => {
-                                        setCategoryFilterStatus(prev => ({
-                                            ...prev,
-                                            [categoryKey]: !prev[categoryKey],
-                                        }));
-                                    }}
+                                <div
+                                    className={`mx-1 my-auto h-10 w-10 rounded-full items-center justify-center flex border-2 ${
+                                        categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
+                                    } `}
                                 >
-                                    <div
-                                        className={`mx-1 my-auto h-10 w-10 rounded-full items-center justify-center flex border-2 ${
-                                            categoryFilterStatus[categoryKey] ? "bg-base-100" : "bg-base-300"
-                                        } `}
-                                    >
-                                        {category[categoryKey].icon}
-                                    </div>
-                                    <p className={`mr-1 md:text-base text-sm font-bold`}>
-                                        {category[categoryKey].title}
-                                    </p>
-                                </button>
-                            ))}
-                        </div>
+                                    {category[categoryKey].icon}
+                                </div>
+                                <p className={`mr-1 md:text-base text-sm font-bold`}>{category[categoryKey].title}</p>
+                            </button>
+                        ))}
                     </div>
                 </div>
-                {/* {facilityDatas.map(content => (
+            </div>
+            {/* {facilityDatas.map(content => (
                     <BottomSheet key={content.id}>
                         <p className="m-8 text-center text-3xl font-bold">{content.name}</p>
                         <img
@@ -154,8 +148,7 @@ export default function SchoolMap() {
                         <p className="text-center text-2xl">{content.detail}</p>
                     </BottomSheet>
                 ))} */}
-                <BottomNav />
-            </div>
-        </Resizer>
+            <BottomNav />
+        </div>
     );
 }
