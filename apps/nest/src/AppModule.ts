@@ -11,6 +11,7 @@ import { PartnershipModule } from '@/modules/partnership/PartnershipModule';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { RedisConfigService } from '@/config/redis';
 import { WebSocketModule } from '@/config/websocket/WebSocketModule';
+import { TcpServerService } from '@/config/tcpsocket/TcpSocket.service';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { WebSocketModule } from '@/config/websocket/WebSocketModule';
     WebSocketModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [TcpServerService],
 })
 export class AppModule {}

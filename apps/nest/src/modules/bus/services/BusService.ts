@@ -13,13 +13,6 @@ export class BusService {
 
   constructor(private readonly redisService: RedisService) {}
 
-  public async getBusPosition(bus_id: string, pos: string): Promise<any> {
-    const redisClient = this.redisService.getClient();
-
-    this.logger.log(`Received bus location for ${bus_id}, pos: ${pos}`);
-    await redisClient.set('bus' + bus_id.toString().padStart(2, '0'), pos);
-  }
-
   // 일정한 주기로 실행되도록 Cron 설정
   @Cron('*/10 * * * * *') // 10초마다 실행
   public async handleCron(): Promise<any[]> {
