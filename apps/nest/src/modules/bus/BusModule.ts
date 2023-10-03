@@ -12,7 +12,7 @@ import {
   BusRouteService,
   BusStopService,
 } from '@/modules/bus/services';
-import { DTOMapperModule } from "@/common/utils";
+import { DTOMapperModule } from '@/common/utils';
 
 @Module({
   imports: [

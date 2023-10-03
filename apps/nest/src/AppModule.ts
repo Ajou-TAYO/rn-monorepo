@@ -11,7 +11,6 @@ import { RedisConfigService } from '@/config/redis';
 import { WebSocketModule } from '@/config/websocket/WebSocketModule';
 import { TcpServerService } from '@/config/tcpsocket/TcpSocket.service';
 import { AuthModule } from '@/modules/auth/AuthModule';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

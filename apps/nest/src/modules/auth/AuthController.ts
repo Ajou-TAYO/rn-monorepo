@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/AuthService';
 import { CreateMemberRequestDTO, LoginRequestDTO } from 'src/modules/auth/dtos';
 import { MemberResponseDTO } from '@/modules/auth/dtos/response';
-import {DTOMapper, Roles} from '@/common/utils';
+import { EmailRequestDTO } from '@/modules/auth/dtos/EmailRequestDTO';
 
 @Controller('my')
 export class AuthController {
@@ -18,5 +18,11 @@ export class AuthController {
   ): Promise<MemberResponseDTO> {
     const member = await this.authService.createMember(createMemberRequestDTO);
     return new MemberResponseDTO(member);
+  }
+
+  @Post('/signup/email/request')
+  async checkEmail(@Body() emailRequestDTO: EmailRequestDTO): Promise<boolean> {
+    const { email } = emailRequestDTO;
+    return await this.authService.checkEmail(email);
   }
 }

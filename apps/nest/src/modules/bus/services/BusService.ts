@@ -1,8 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BusNotice } from '@/modules/bus/entities';
-import { Repository } from 'typeorm';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Cron } from '@nestjs/schedule';
 import { RedisService } from '@liaoliaots/nestjs-redis';

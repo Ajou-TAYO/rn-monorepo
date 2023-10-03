@@ -1,1 +1,1 @@
-export * from './MemberResponseDTO'
+export * from './MemberResponseDTO';
