@@ -18,7 +18,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET_KEY'),
         signOptions: {
-          expiresIn: '1m',
+          expiresIn: '30d',
         },
       }),
     }),

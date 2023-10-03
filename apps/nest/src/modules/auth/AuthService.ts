@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Member } from '@/modules/member/entities';
 import { Repository } from 'typeorm';
@@ -9,6 +13,7 @@ import * as nodemailer from 'nodemailer';
 import { Role } from '@/common/utils';
 import { ConfigService } from '@nestjs/config';
 import { RedisService } from '@liaoliaots/nestjs-redis';
+import { UpdateNicknameRequestDTO } from '@/modules/auth/dtos/UpdateNicknameRequestDTO';
 
 @Injectable()
 export class AuthService {
@@ -26,14 +31,14 @@ export class AuthService {
       where: { email: email },
     });
     if (!member) {
-      throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요.');
+      throw new UnauthorizedException('잘못된 인증 정보입니다.');
     }
     const isPasswordValidated: boolean = await bcrypt.compare(
       password,
       member.password,
     );
     if (!isPasswordValidated) {
-      throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
+      throw new UnauthorizedException('잘못된 인증 정보입니다.');
     }
     const payload = { email, sub: member.id };
     return {
@@ -71,7 +76,7 @@ export class AuthService {
     return await this.memberRepository.save(member);
   }
 
-  async checkEmail(email: string): Promise<boolean> {
+  async sendEmail(email: string): Promise<boolean> {
     const getRandomCode = (min, max) => {
       min = Math.ceil(min);
       max = Math.floor(max);
@@ -111,6 +116,18 @@ export class AuthService {
     return sendResult.accepted.length > 0;
   }
 
+  async checkEmail(email: string): Promise<boolean> {
+    const isMemberExist = await this.memberRepository.findOne({
+      where: { email: email },
+    });
+
+    if (isMemberExist) {
+      return false;
+    }
+
+    return true;
+  }
+
   async storeRandomCodeWithExpiration(
     email: string,
     randomCode: string,
@@ -123,5 +140,30 @@ export class AuthService {
     const redisClient = this.redisService.getClient();
     const randomCode = await redisClient.get(email);
     return randomCode ? randomCode.toString() : null;
+  }
+
+  async getNickname(id: number): Promise<string> {
+    const member = await this.memberRepository.findOne({ where: { id } });
+    if (!member) {
+      throw new BadRequestException('유저 정보 오류');
+    }
+    return member.nickname;
+  }
+
+  async updateNickname(
+    id: number,
+    updateNicknameRequestDTO: UpdateNicknameRequestDTO,
+  ) {
+    const { nickname } = updateNicknameRequestDTO;
+
+    const member = await this.memberRepository.findOne({ where: { id } });
+    if (!member) {
+      throw new BadRequestException('유저 정보 오류');
+    }
+
+    member.nickname = nickname;
+    await this.memberRepository.save(member);
+
+    return member.nickname;
   }
 }

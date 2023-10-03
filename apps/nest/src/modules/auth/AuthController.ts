@@ -1,15 +1,40 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/AuthService';
 import { CreateMemberRequestDTO, LoginRequestDTO } from 'src/modules/auth/dtos';
-import { MemberResponseDTO } from '@/modules/auth/dtos/response';
+import {
+  MemberResponseDTO,
+  NicknameResponseDTO,
+} from '@/modules/auth/dtos/response';
 import { EmailRequestDTO } from '@/modules/auth/dtos/EmailRequestDTO';
+import { TokenResponseDTO } from '@/modules/auth/dtos/response/TokenResponseDTO';
+import { AuthGuard } from '@nestjs/passport';
+import { UpdateNicknameRequestDTO } from '@/modules/auth/dtos/UpdateNicknameRequestDTO';
 
 @Controller('my')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('/login')
   async login(@Body() loginRequestDTO: LoginRequestDTO) {
-    return this.authService.login(loginRequestDTO);
+    const { token } = await this.authService.login(loginRequestDTO);
+    return new TokenResponseDTO(token);
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/nickname/reset')
+  async getNickname(@Req() req) {
+    const { id } = req.user;
+    const nickname = await this.authService.getNickname(id);
+    return new NicknameResponseDTO(nickname);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/nickname/reset')
+  async updateNickname(
+    @Req() req,
+    @Body() updateNicknameRequestDTO: UpdateNicknameRequestDTO,
+  ) {
+    const { id } = req.user;
+    const newNickname = await this.authService.updateNickname(id, updateNicknameRequestDTO);
+    return new NicknameResponseDTO(newNickname);
   }
 
   @Post('/signup')
@@ -21,6 +46,11 @@ export class AuthController {
   }
 
   @Post('/signup/email/request')
+  async sendEmail(@Body() emailRequestDTO: EmailRequestDTO): Promise<boolean> {
+    const { email } = emailRequestDTO;
+    return await this.authService.sendEmail(email);
+  }
+  @Post('/signup/email')
   async checkEmail(@Body() emailRequestDTO: EmailRequestDTO): Promise<boolean> {
     const { email } = emailRequestDTO;
     return await this.authService.checkEmail(email);
