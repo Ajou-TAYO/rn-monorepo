@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from '@/modules/auth/AuthService';
-import { CreateMemberRequestDTO, LoginRequestDTO } from 'src/modules/auth/dtos';
+import {
+  CreateMemberRequestDTO,
+  LoginRequestDTO,
+  UpdatePasswordRequestDTO,
+} from 'src/modules/auth/dtos';
 import {
   MemberResponseDTO,
   NicknameResponseDTO,
@@ -33,8 +37,24 @@ export class AuthController {
     @Body() updateNicknameRequestDTO: UpdateNicknameRequestDTO,
   ) {
     const { id } = req.user;
-    const newNickname = await this.authService.updateNickname(id, updateNicknameRequestDTO);
+    const newNickname = await this.authService.updateNickname(
+      id,
+      updateNicknameRequestDTO,
+    );
     return new NicknameResponseDTO(newNickname);
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/password/reset')
+  async updatePassword(
+    @Req() req,
+    @Body() updatePasswordRequestDTO: UpdatePasswordRequestDTO,
+  ): Promise<boolean> {
+    const { id } = req.user;
+    const success = await this.authService.updatePassword(
+      id,
+      updatePasswordRequestDTO,
+    );
+    return success;
   }
 
   @Post('/signup')

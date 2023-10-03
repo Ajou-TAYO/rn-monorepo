@@ -7,7 +7,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Member } from '@/modules/member/entities';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { CreateMemberRequestDTO, LoginRequestDTO } from 'src/modules/auth/dtos';
+import {
+  CreateMemberRequestDTO,
+  LoginRequestDTO,
+  UpdatePasswordRequestDTO,
+} from 'src/modules/auth/dtos';
 import * as bcrypt from 'bcrypt';
 import * as nodemailer from 'nodemailer';
 import { Role } from '@/common/utils';
@@ -165,5 +169,25 @@ export class AuthService {
     await this.memberRepository.save(member);
 
     return member.nickname;
+  }
+
+  async updatePassword(
+    id: number,
+    updatePasswordRequestDTO: UpdatePasswordRequestDTO,
+  ): Promise<boolean> {
+    const member = await this.memberRepository.findOne({ where: { id } });
+    if (!member) {
+      throw new BadRequestException('유저 정보 오류');
+    }
+
+    const { newPw, checkPw } = updatePasswordRequestDTO;
+    if (newPw !== null && checkPw !== null && newPw === checkPw) {
+      const hashedNewPassword = await bcrypt.hash(newPw, 10);
+      member.password = hashedNewPassword;
+      await this.memberRepository.save(member);
+      return true;
+    } else {
+      throw new BadRequestException('다시 입력해주세요.');
+    }
   }
 }
